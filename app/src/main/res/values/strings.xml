@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Blood_App</string>
+    <string name="email_empty">Por favor ingresa un correo</string>
+    <string name="email_invalid">Correo no válido</string>
+    <string name="email_entered">Email ingresado: %1$s</string>
+
 </resources>

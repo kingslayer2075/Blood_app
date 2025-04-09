@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-class MainActivity : AppCompatActivity() {
+class ProfileCreateActivity : AppCompatActivity() {
 
     private lateinit var logoImage: ImageView
     private lateinit var titleText: TextView
@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_create)
+
+
         logoImage = findViewById(R.id.logoImage)
         titleText = findViewById(R.id.titleText)
         subtitleText = findViewById(R.id.subtitleText)
