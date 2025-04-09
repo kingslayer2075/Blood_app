@@ -1,5 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Blood_App" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Tema principal que hereda de AppCompat -->
+    <style name="Theme.Blood_App" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Colores principales -->
+        <item name="colorPrimary">@color/red_500</item>
+        <item name="colorPrimaryDark">@color/red_700</item>
+        <item name="colorAccent">@color/white</item>
+
+        <!-- Barra de estado (solo se aplica en Lollipop o superior) -->
+        <item name="android:statusBarColor" tools:targetApi="l">@color/red_700</item>
+
+        <!-- Configuraciones de ventana -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <!-- Fondos por defecto -->
+        <item name="android:windowBackground">@android:color/white</item>
+
+        <!-- Fuente y apariencia de botones -->
+        <item name="buttonStyle">@style/Widget.AppCompat.Button</item>
+    </style>
+
 </resources>

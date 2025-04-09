@@ -19,8 +19,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var googleLoginButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Asegura que uses un tema basado en AppCompat (ya configurado en styles.xml y AndroidManifest.xml)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.profile_create)
+
+        // Inicializar vistas
         logoImage = findViewById(R.id.logoImage)
         titleText = findViewById(R.id.titleText)
         subtitleText = findViewById(R.id.subtitleText)
@@ -29,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         createAccountButton = findViewById(R.id.createAccountButton)
         googleLoginButton = findViewById(R.id.googleLoginButton)
 
-
+        // Lógica de botones
         continueButton.setOnClickListener {
             val email = emailInput.text.toString()
             Toast.makeText(this, "Email ingresado: $email", Toast.LENGTH_SHORT).show()
