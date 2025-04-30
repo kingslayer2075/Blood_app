@@ -32,9 +32,10 @@
             android:textStyle="bold"
             android:gravity="start" />
         <TextView
+            android:id="@+id/profileNameTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Juan Esteban"
+            android:text=""
             android:gravity="start" />
 
         <TextView
@@ -46,7 +47,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gamin Dominguez"
+            android:text=""
             android:gravity="start" />
 
         <TextView
@@ -58,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="O+"
+            android:text=""
             android:gravity="start" />
 
         <LinearLayout
@@ -81,7 +82,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="56 kg"
+                    android:text="kg"
                     android:gravity="start" />
             </LinearLayout>
 
@@ -99,7 +100,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1,70"
+                    android:text="cm"
                     android:gravity="start" />
             </LinearLayout>
 
@@ -117,7 +118,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="24"
+                    android:text=""
                     android:gravity="start" />
             </LinearLayout>
         </LinearLayout>
@@ -131,9 +132,10 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/profileEmailTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Elvargas.saber@gmail.com"
+            android:text=""
             android:gravity="start" />
 
         <LinearLayout

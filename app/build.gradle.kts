@@ -62,13 +62,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.constraintlayout)
-    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.google.material)
     implementation(libs.firebase.firestore)
-
-
-
-
-
+    implementation(libs.firebase.auth.ktx)
 }

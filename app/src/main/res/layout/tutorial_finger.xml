@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="440dp"
+            android:layout_height="62dp"
+            android:background="#F44336"
+            android:gravity="center"
+            android:text="Pulsaciones Por Minuto"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="16dp" />
+
+        <TextView
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:background="#F44336"
+            android:padding="12dp"
+            android:text="Oprime el\nboton\nprincipal"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↓"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="168dp"
+            android:layout_height="wrap_content"
+            android:background="#F44336"
+            android:padding="12dp"
+            android:text="Pon el tu\ndedo en la\ncamara"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="↓"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="169dp"
+            android:layout_height="96dp"
+            android:background="#F44336"
+            android:padding="12dp"
+            android:text="Espera tus\nresultados"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <Button
+            android:layout_width="165dp"
+            android:layout_height="58dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="32dp"
+            android:backgroundTint="#F44336"
+            android:elevation="4dp"
+            android:paddingHorizontal="24dp"
+            android:text="Siguiente"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+</ScrollView>

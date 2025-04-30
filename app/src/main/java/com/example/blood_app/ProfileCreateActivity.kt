@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
-import com.example.blood_app.ui.theme.IniciasSesionActivity
 
 
 class ProfileCreateActivity : AppCompatActivity() {
