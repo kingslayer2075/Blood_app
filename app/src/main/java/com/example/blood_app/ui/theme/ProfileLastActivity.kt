@@ -7,6 +7,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import android.content.Intent
+import android.widget.Button
+import com.example.blood_app.ui.theme.HistorialActivity
+
 
 class ProfileLastActivity : AppCompatActivity() {
 
@@ -21,6 +25,12 @@ class ProfileLastActivity : AppCompatActivity() {
         profileNameTextView = findViewById(R.id.profileNameTextView)
         profileEmailTextView = findViewById(R.id.profileEmailTextView)
 
+        loadUserProfile()
+        val historialButton: Button = findViewById(R.id.historialButton)
+        historialButton.setOnClickListener {
+            val intent = Intent(this, HistorialActivity::class.java)
+            startActivity(intent)
+        }
         loadUserProfile()
     }
 
