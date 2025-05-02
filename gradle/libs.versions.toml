@@ -7,12 +7,13 @@ junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
-composeBom = "2025.04.00"
+composeBom = "2025.04.01"
 appcompat = "1.7.0"
 googleMaterial = "1.12.0"
 googleGmsGoogleServices = "4.4.2"
 firebaseDatabase = "21.0.0"
-firebaseAuthKtx = "22.3.1"
+firebaseAuthKtx = "23.2.0"
+mpandroidchart = "v3.1.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,8 +34,9 @@ constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayo
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 google-material = { group = "com.google.android.material", name = "material", version.ref = "googleMaterial" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
-firebase-firestore = "com.google.firebase:firebase-firestore-ktx:25.1.3"
+firebase-firestore = "com.google.firebase:firebase-firestore-ktx:25.1.4"
 firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+mpandroidchart = { group = "com.github.PhilJay", name = "MPAndroidChart", version.ref = "mpandroidchart" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

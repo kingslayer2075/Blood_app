@@ -66,4 +66,5 @@ dependencies {
     implementation(libs.google.material)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.mpandroidchart)
 }
