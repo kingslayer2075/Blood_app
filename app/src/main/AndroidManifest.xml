@@ -28,7 +28,9 @@
         <activity android:name=".CreateProfileFirsActivity" />
         <activity android:name=".ProfileLastActivity" />
         <activity android:name=".PrincipalPageActivity" />
-        <activity android:name=".ui.theme.IniciasSesionActivity" />
+        <activity android:name=".ui.theme.HistorialActivity" />
+        <activity android:name=".ui.theme.PpmActivity" />
+        <activity android:name=".IniciasSesionActivity" />
 
 
 
