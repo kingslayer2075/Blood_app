@@ -31,6 +31,9 @@
         <activity android:name=".ui.theme.HistorialActivity" />
         <activity android:name=".ui.theme.PpmActivity" />
         <activity android:name=".IniciasSesionActivity" />
+        <activity android:name=".CameraActivity" />
+
+        " />
 
 
 
