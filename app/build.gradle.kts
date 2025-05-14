@@ -46,6 +46,8 @@ android {
 
 dependencies {
 
+
+    implementation(libs.firebase.auth)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)

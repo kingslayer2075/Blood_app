@@ -19,6 +19,7 @@ crashlytics = "3.0.3"
 navigationCompose = "2.9.0"
 
 [libraries]
+firebase-auth = { module = "com.google.firebase:firebase-auth", version = "22.3.1" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

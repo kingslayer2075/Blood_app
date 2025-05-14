@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
-import androidx.compose.ui.semantics.text
-import com.google.firebase.firestore.FirebaseFirestore
 import android.util.Log
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class CreateProfileFirsActivity : AppCompatActivity() {
 
@@ -20,7 +20,9 @@ class CreateProfileFirsActivity : AppCompatActivity() {
     private lateinit var ageInput: EditText
     private lateinit var continuarButton: Button
     private lateinit var btnBack: ImageView
+
     private val db = FirebaseFirestore.getInstance()
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,11 +42,11 @@ class CreateProfileFirsActivity : AppCompatActivity() {
         btnBack.setOnClickListener { finish() }
 
         continuarButton.setOnClickListener {
-            createFirestoreUser()
-
+            registerUser()
         }
     }
-    private fun createFirestoreUser() {
+
+    private fun registerUser() {
         val name = nameInput.text.toString().trim()
         val lastName = lastNameInput.text.toString().trim()
         val email = emailInput.text.toString().trim()
@@ -65,35 +67,43 @@ class CreateProfileFirsActivity : AppCompatActivity() {
         val age = ageStr.toIntOrNull()
 
         if (weight == null || height == null || age == null) {
-            Toast.makeText(this, "Por favor, introduce valores numéricos válidos para peso, altura y edad.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Introduce valores válidos para peso, altura y edad.", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val user = hashMapOf(
-            "nombre" to name,
-            "apellido" to lastName,
-            "correo" to email,
-            "clave" to password,
-            "tipoSangre" to bloodType,
-            "peso" to weight,
-            "altura" to height,
-            "edad" to age
-        )
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
 
-        db.collection("usuarios")
-            .add(user)
-            .addOnSuccessListener { documentReference ->
-                Log.d(TAG, "Documento de usuario añadido con ID: ${documentReference.id}")
-                Toast.makeText(this, "Usuario registrado", Toast.LENGTH_SHORT).show()
+                    val user = hashMapOf(
+                        "uid" to uid,
+                        "nombre" to name,
+                        "apellido" to lastName,
+                        "correo" to email,
+                        "tipoSangre" to bloodType,
+                        "peso" to weight,
+                        "altura" to height,
+                        "edad" to age
+                    )
 
-                startActivity(Intent(this, ProfileLastActivity::class.java))
-                finish()
-            }
-            .addOnFailureListener { e ->
-                Log.w(TAG, "Error al añadir documento de usuario", e)
-                Toast.makeText(this, "Error al registrar usuario: ${e.message}", Toast.LENGTH_SHORT).show()
+                    db.collection("usuarios").document(uid)
+                        .set(user)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Usuario registrado", Toast.LENGTH_SHORT).show()
+                            startActivity(Intent(this, ProfileLastActivity::class.java))
+                            finish()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.w(TAG, "Error al guardar en Firestore", e)
+                            Toast.makeText(this, "Error en Firestore: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(this, "Error al crear usuario: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
             }
     }
+
     companion object {
         private const val TAG = "CreateProfileActivity"
     }
