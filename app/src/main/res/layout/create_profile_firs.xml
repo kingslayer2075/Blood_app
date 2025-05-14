@@ -39,6 +39,7 @@
                 android:padding="10dp" />
 
             <EditText
+                android:id="@+id/lastNameInput"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Apellido"
@@ -53,12 +54,14 @@
                 android:padding="10dp" />
 
             <EditText
+                android:id="@+id/bloodTypeInput"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Tipo de sangre"
                 android:padding="10dp" />
 
             <EditText
+                android:id="@+id/weightInput"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Peso (kg)"
@@ -66,6 +69,7 @@
                 android:padding="10dp" />
 
             <EditText
+                android:id="@+id/heightInput"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Estatura (m)"
@@ -73,6 +77,7 @@
                 android:padding="10dp" />
 
             <EditText
+                android:id="@+id/ageInput"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:hint="Edad"

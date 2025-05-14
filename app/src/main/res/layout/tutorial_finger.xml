@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:background="#F44336"
             android:padding="12dp"
-            android:text="Oprime el\nboton\nprincipal"
+            android:text="Oprime el\nbotón\nprincipal"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="18sp" />
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:background="#F44336"
             android:padding="12dp"
-            android:text="Pon el tu\ndedo en la\ncamara"
+            android:text="Pon tu\ndedo en la\ncámara"
             android:textAlignment="center"
             android:textColor="#000000"
             android:textSize="18sp" />

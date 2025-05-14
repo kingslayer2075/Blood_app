@@ -8,6 +8,8 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
+import android.widget.*
 
 
 
@@ -15,12 +17,16 @@ class HistorialActivity : AppCompatActivity() {
 
     private lateinit var lineChart: LineChart
     private val db = FirebaseFirestore.getInstance()
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.historial)
 
         lineChart = findViewById(R.id.lineChart)
+        btnBack = findViewById(R.id.btnBack)
+
+        btnBack.setOnClickListener { finish()}
 
         obtenerDatosDesdeFirebase()
     }

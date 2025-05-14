@@ -1,6 +1,10 @@
 package com.example.blood_app.ui.theme
 
 import android.graphics.Color
+import android.util.Log
+import android.widget.*
+import android.content.Intent
+import com.google.firebase.firestore.FirebaseFirestore
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.blood_app.R
@@ -13,12 +17,16 @@ import com.github.mikephil.charting.data.LineDataSet
 class PpmActivity : AppCompatActivity() {
 
     private lateinit var lineChart: LineChart
+    private lateinit var btnBack: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.ppm)
 
         lineChart = findViewById(R.id.lineChart)
+        btnBack = findViewById(R.id.btnBack)
+
+        btnBack.setOnClickListener{finish()}
 
         val datos = listOf(
             Entry(0f, 70f),
