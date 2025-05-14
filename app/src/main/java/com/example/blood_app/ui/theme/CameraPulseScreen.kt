@@ -22,7 +22,7 @@ fun CameraPulseScreen(viewModel: CameraViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Valor actual
-        Text("Pulso actual: ${pulseData.value} BPM")
+        Text("Pulso actual: ${pulseData.value} PPM")
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -31,7 +31,7 @@ fun CameraPulseScreen(viewModel: CameraViewModel) {
 
         Column {
             viewModel.pulseList.forEach {
-                Text("• ${it.value} BPM @ ${formatTimestamp(it.timestamp)}")
+                Text("• ${it.value} PPM @ ${formatTimestamp(it.timestamp)}")
             }
         }
     }
@@ -46,8 +46,5 @@ fun formatTimestamp(timestamp: Long): String {
 @Preview(showBackground = true)
 @Composable
 fun PreviewCameraPulseScreen() {
-    // ⚠️ OJO: viewModel() no funciona bien en @Preview
-    // Esto solo es válido si tenés un entorno de prueba o mock
-    // Podés comentar esta parte si no la necesitás
-    // CameraPulseScreen(viewModel = viewModel())
+
 }

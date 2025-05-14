@@ -3,54 +3,98 @@ package com.example.blood_app
 import androidx.lifecycle.*
 import kotlinx.coroutines.*
 import androidx.compose.runtime.mutableStateListOf
+import com.google.firebase.database.FirebaseDatabase
+import android.util.Log
+import java.util.UUID
+import com.example.blood_app.Event
 
+//Estado de la camara de tipo mutable, lista y guradado temporal, funcion para validar,
+// simular y actualizar los valores de pulso
 class CameraViewModel : ViewModel() {
 
-    // MutableLiveData para almacenar el pulso actual
     private val _pulseData = MutableLiveData<Int>()
     val pulseData: LiveData<Int> get() = _pulseData
 
-    // MutableLiveData para el estado de la cámara (si está lista o no)
     private val _isCameraReady = MutableLiveData<Boolean>()
     val isCameraReady: LiveData<Boolean> get() = _isCameraReady
 
-    // Lista temporal para guardar los datos de pulso
     private val pulseDataList = mutableStateListOf<PulseData>()
 
-    // Getter para el pulso actual
     val pulseValue: Int?
         get() = _pulseData.value
 
-    // Getter para la lista de pulsos registrados
     val pulseList: List<PulseData>
         get() = pulseDataList.toList()
 
-    // Función para validar el pulso
+    private val uploadSuccessEvent = MutableLiveData<Event<Boolean>>()
+
     fun validatePulse(pulse: Int): Boolean {
-        // Validación básica: asegurar que el pulso esté en un rango razonable (60-100)
         return pulse in 60..100
     }
 
-    // Función para simular la medición del pulso
     fun startPulseMeasurement() {
         viewModelScope.launch {
             val simulatedPulse = withContext(Dispatchers.IO) {
-                (60..100).random() // Simula un valor de pulso aleatorio entre 60 y 100
+                (60..100).random()
             }
 
             // Validar el pulso antes de actualizar el valor
             if (validatePulse(simulatedPulse)) {
-                _pulseData.postValue(simulatedPulse) // Actualizar el valor del pulso
-                pulseDataList.add(PulseData(simulatedPulse)) // Agregar a la lista de pulsos
+                _pulseData.postValue(simulatedPulse)
+                val newReading = PulseData(simulatedPulse)
+                pulseDataList.add(newReading)
+                if (pulseDataList.size ==5) {
+                    uploadToFirebase(pulseDataList.toList())
+                    pulseDataList.clear()
+                }
             } else {
-                // Si el pulso no es válido, puedes manejarlo (por ejemplo, registrando un error)
-                // Aquí no hacemos nada, pero puedes implementar alguna lógica de manejo de errores
+                // Si el pulso no es válido, se puede manejar (por ejemplo, registrando un error)
             }
         }
     }
 
-    // Función para establecer si la cámara está lista o no
+    private fun uploadToFirebase(pulseList: List<PulseData>) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("heart_rate_readings")
+
+        val dataMap = pulseList.map {
+            mapOf("value" to it.value, "timestamp" to it.timestamp)
+        }
+
+        val entryId = UUID.randomUUID().toString()
+
+        ref.child(entryId).setValue(dataMap)
+            .addOnSuccessListener {
+                Log.d("Firebase", "Datos subidos correctamente.")
+            }
+            .addOnFailureListener {
+                Log.e("Firebase", "Error al subir datos", it)
+            }
+    }
+
     fun setCameraReady(isReady: Boolean) {
         _isCameraReady.postValue(isReady)
     }
+
+    fun fetchPulseDataFromFirebase(onDataReady: (List<PulseData>) -> Unit) {
+        val database = FirebaseDatabase.getInstance()
+        val ref = database.getReference("heart_rate_readings")
+
+        ref.get().addOnSuccessListener { snapshot ->
+            val pulseList = mutableListOf<PulseData>()
+            snapshot.children.forEach { entry ->
+                entry.children.forEach {
+                    val value = it.child("value").getValue(Int::class.java)
+                    val timestamp = it.child("timestamp").getValue(Long::class.java)
+                    if (value != null && timestamp != null) {
+                        pulseList.add(PulseData(value, timestamp))
+                    }
+                }
+            }
+            onDataReady(pulseList)
+        }.addOnFailureListener {
+            Log.e("Firebase", "Error al leer datos", it)
+        }
+    }
+
 }

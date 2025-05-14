@@ -88,14 +88,12 @@ class CreateProfileFirsActivity : AppCompatActivity() {
                         "edad" to age
                     )
 
-                    // Guardar datos en la colección "usuarios"
+                    // Guardar datos
                     db.collection("usuarios").document(uid)
                         .set(user)
                         .addOnSuccessListener {
-                            // Ahora que el usuario fue registrado, vamos a agregarlo en "ppmData"
                             val ppmData = hashMapOf("uid" to uid)
 
-                            // Crear documento vacío en la colección "ppmData" usando el UID
                             db.collection("ppmData").document(uid)
                                 .set(ppmData)
                                 .addOnSuccessListener {

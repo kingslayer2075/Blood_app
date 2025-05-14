@@ -16,19 +16,19 @@ class PrincipalPageActivity : AppCompatActivity() {
         val profButton = findViewById<ImageButton>(R.id.profButton)
         val cameraButton = findViewById<ImageButton>(R.id.ButtonP)  // Aquí se obtiene el botón de la cámara
 
-        // Lógica para abrir la actividad de 'ProfileLastActivity'
+        // Abrir la actividad de 'ProfileLastActivity'
         profButton.setOnClickListener {
             val intent = Intent(this, ProfileLastActivity::class.java)
             startActivity(intent)
         }
 
-        // Lógica para abrir la actividad de 'PpmActivity'
+        // Abrir la actividad de 'PpmActivity'
         ppmbButton.setOnClickListener {
             val intent = Intent(this, PpmActivity::class.java)
             startActivity(intent)
         }
 
-        // Lógica para abrir la actividad de la cámara ('CameraActivity')
+        // Abrir la actividad de la cámara ('CameraActivity')
         cameraButton.setOnClickListener {
             val cameraIntent = Intent(this, CameraActivity::class.java)  // Aquí abre CameraActivity
             startActivity(cameraIntent)
