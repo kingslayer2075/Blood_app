@@ -76,6 +76,7 @@ class CreateProfileFirsActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
 
+                    // Crear documento en la colección "usuarios"
                     val user = hashMapOf(
                         "uid" to uid,
                         "nombre" to name,
@@ -87,12 +88,26 @@ class CreateProfileFirsActivity : AppCompatActivity() {
                         "edad" to age
                     )
 
+                    // Guardar datos en la colección "usuarios"
                     db.collection("usuarios").document(uid)
                         .set(user)
                         .addOnSuccessListener {
-                            Toast.makeText(this, "Usuario registrado", Toast.LENGTH_SHORT).show()
-                            startActivity(Intent(this, ProfileLastActivity::class.java))
-                            finish()
+                            // Ahora que el usuario fue registrado, vamos a agregarlo en "ppmData"
+                            val ppmData = hashMapOf("uid" to uid)
+
+                            // Crear documento vacío en la colección "ppmData" usando el UID
+                            db.collection("ppmData").document(uid)
+                                .set(ppmData)
+                                .addOnSuccessListener {
+                                    // Todo ha ido bien, ahora redirigir al siguiente Activity
+                                    Toast.makeText(this, "Usuario registrado y PPM Data creado", Toast.LENGTH_SHORT).show()
+                                    startActivity(Intent(this, ProfileLastActivity::class.java))
+                                    finish()
+                                }
+                                .addOnFailureListener { e ->
+                                    Log.w(TAG, "Error al guardar en ppmData: ${e.message}")
+                                    Toast.makeText(this, "Error al crear PPM Data", Toast.LENGTH_SHORT).show()
+                                }
                         }
                         .addOnFailureListener { e ->
                             Log.w(TAG, "Error al guardar en Firestore", e)

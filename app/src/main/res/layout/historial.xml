@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <!-- Botón de retroceso -->
     <ImageView
         android:id="@+id/btnBack"
         android:layout_width="60dp"
@@ -13,16 +14,14 @@
         android:src="@drawable/returning"
         android:contentDescription="Volver"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_alignParentStart="true"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="16dp"/>
 
+    <!-- Contenedor ScrollView para permitir el desplazamiento -->
     <ScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/btnBack"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -33,21 +32,28 @@
             android:padding="16dp">
 
             <TextView
+                android:id="@+id/titleHistorial"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Historial"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:layout_gravity="center"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Subheading"
-                android:textSize="14sp"
+                android:layout_marginBottom="8dp"
+                android:text=""
                 android:textColor="#666666"
-                android:layout_marginBottom="8dp" />
+                android:textSize="14sp" />
 
+            <!-- CardView con la gráfica -->
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,6 +75,7 @@
                         android:textColor="#000000"
                         android:layout_gravity="center"/>
 
+                    <!-- LineChart donde se va a mostrar la gráfica -->
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/lineChart"
                         android:layout_width="match_parent"
@@ -76,6 +83,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"/>
 
+                    <!-- Textos informativos debajo de la gráfica -->
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
