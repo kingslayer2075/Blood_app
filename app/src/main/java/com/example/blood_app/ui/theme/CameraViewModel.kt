@@ -1,15 +1,13 @@
 package com.example.blood_app
 
+import android.util.Log
 import androidx.lifecycle.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.*
 import androidx.compose.runtime.mutableStateListOf
-import com.google.firebase.database.FirebaseDatabase
-import android.util.Log
-import java.util.UUID
-import com.example.blood_app.Event
 
-//Estado de la camara de tipo mutable, lista y guradado temporal, funcion para validar,
-// simular y actualizar los valores de pulso
 class CameraViewModel : ViewModel() {
 
     private val _pulseData = MutableLiveData<Int>()
@@ -38,37 +36,37 @@ class CameraViewModel : ViewModel() {
                 (60..100).random()
             }
 
-            // Validar el pulso antes de actualizar el valor
             if (validatePulse(simulatedPulse)) {
                 _pulseData.postValue(simulatedPulse)
                 val newReading = PulseData(simulatedPulse)
                 pulseDataList.add(newReading)
-                if (pulseDataList.size ==5) {
-                    uploadToFirebase(pulseDataList.toList())
+
+                if (pulseDataList.size == 1) {
+                    uploadToFirebase(newReading)
                     pulseDataList.clear()
                 }
-            } else {
-                // Si el pulso no es válido, se puede manejar (por ejemplo, registrando un error)
             }
         }
     }
 
-    private fun uploadToFirebase(pulseList: List<PulseData>) {
-        val database = FirebaseDatabase.getInstance()
-        val ref = database.getReference("heart_rate_readings")
+    private fun uploadToFirebase(pulse: PulseData) {
+        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val db = FirebaseFirestore.getInstance()
 
-        val dataMap = pulseList.map {
-            mapOf("value" to it.value, "timestamp" to it.timestamp)
-        }
+        val data = mapOf(
+            "ppm" to pulse.value,
+            "timestamp" to pulse.timestamp
+        )
 
-        val entryId = UUID.randomUUID().toString()
-
-        ref.child(entryId).setValue(dataMap)
+        db.collection("ppmData")
+            .document(uid)
+            .collection("registros")
+            .add(data)
             .addOnSuccessListener {
-                Log.d("Firebase", "Datos subidos correctamente.")
+                Log.d("Firestore", "PPM registrado correctamente.")
             }
-            .addOnFailureListener {
-                Log.e("Firebase", "Error al subir datos", it)
+            .addOnFailureListener { e ->
+                Log.e("Firestore", "Error al subir PPM: ${e.message}")
             }
     }
 
@@ -83,7 +81,7 @@ class CameraViewModel : ViewModel() {
         ref.get().addOnSuccessListener { snapshot ->
             val pulseList = mutableListOf<PulseData>()
             snapshot.children.forEach { entry ->
-                entry.children.forEach {
+                entry.children.forEach { it: DataSnapshot ->
                     val value = it.child("value").getValue(Int::class.java)
                     val timestamp = it.child("timestamp").getValue(Long::class.java)
                     if (value != null && timestamp != null) {
@@ -96,5 +94,4 @@ class CameraViewModel : ViewModel() {
             Log.e("Firebase", "Error al leer datos", it)
         }
     }
-
 }

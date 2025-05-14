@@ -2,61 +2,60 @@ package com.example.blood_app
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.os.Build
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.font.FontWeight
-import androidx.core.app.ActivityCompat
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import android.app.Activity
-import android.content.Context
 import androidx.compose.ui.platform.LocalContext
 
-
 @Composable
-fun CameraPermissionScreen() {
+fun CameraPermissionScreen(
+    onPermissionGranted: () -> Unit
+) {
     val context = LocalContext.current
-    val permissionGranted = checkCameraPermission(context)
+    val permissionState = remember { mutableStateOf(false) }
 
-    if (!permissionGranted) {
+    // Revisa si ya está concedido el permiso
+    LaunchedEffect(Unit) {
+        permissionState.value = ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.CAMERA
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    // Lanzador para solicitar permiso
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        permissionState.value = isGranted
+        if (isGranted) onPermissionGranted()
+    }
+
+    if (permissionState.value) {
+        onPermissionGranted()
+    } else {
         Column(
             modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Text("Se necesita permiso para usar la cámara", fontWeight = FontWeight.Bold)
+            Text(
+                text = "Se necesita permiso para usar la cámara",
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
-                requestCameraPermission(context as Activity)
+                permissionLauncher.launch(Manifest.permission.CAMERA)
             }) {
                 Text("Solicitar Permiso")
             }
         }
-    }
-}
-
-fun checkCameraPermission(context: Context): Boolean {
-    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.CAMERA
-        ) == PackageManager.PERMISSION_GRANTED
-    } else {
-        true
-    }
-}
-
-fun requestCameraPermission(activity: Activity) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        ActivityCompat.requestPermissions(
-            activity,
-            arrayOf(Manifest.permission.CAMERA),
-            100
-        )
     }
 }

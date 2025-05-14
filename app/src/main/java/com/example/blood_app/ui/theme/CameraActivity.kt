@@ -1,50 +1,82 @@
 package com.example.blood_app
 
+import android.Manifest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.view.PreviewView
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.camera.view.PreviewView
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 class CameraActivity : ComponentActivity() {
-
-    private lateinit var cameraProvider: ProcessCameraProvider
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             MaterialTheme {
                 val viewModel: CameraViewModel = viewModel()
+                var hasPermission by remember { mutableStateOf(false) }
 
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // Vista previa de la cámara
-                    CameraPreviewScreen()
+                val launcher = rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission()
+                ) { granted ->
+                    hasPermission = granted
+                }
 
-                    // Botón para iniciar la medición del pulso
-                    Button(onClick = { viewModel.startPulseMeasurement() }) {
-                        Text("Iniciar Medición de Pulso")
+                LaunchedEffect(Unit) {
+                    launcher.launch(Manifest.permission.CAMERA)
+                }
+
+                if (hasPermission) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        CameraPreviewScreen()
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(onClick = {
+                            viewModel.startPulseMeasurement()
+                        }) {
+                            Text("Iniciar Medición de Pulso")
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        CameraPulseScreen(viewModel)
                     }
-
-                    // Mostrar el valor del pulso
-                    CameraPulseScreen(viewModel)
+                } else {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        Text("Se necesita permiso para usar la cámara.")
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Button(onClick = {
+                            launcher.launch(Manifest.permission.CAMERA)
+                        }) {
+                            Text("Solicitar permiso nuevamente")
+                        }
+                    }
                 }
             }
         }
@@ -69,7 +101,6 @@ fun CameraPreviewScreen() {
 
                     try {
                         preview.setSurfaceProvider(this.surfaceProvider)
-
                         cameraProvider.unbindAll()
                         cameraProvider.bindToLifecycle(
                             lifecycleOwner,

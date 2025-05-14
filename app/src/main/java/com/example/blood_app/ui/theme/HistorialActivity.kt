@@ -38,6 +38,7 @@ class HistorialActivity : AppCompatActivity() {
         db.collection("ppmData")
             .document(uid)
             .collection("registros")
+            .orderBy("timestamp")  // ordenar cronológicamente
             .get()
             .addOnSuccessListener { result ->
                 var index = 0f
@@ -56,10 +57,13 @@ class HistorialActivity : AppCompatActivity() {
                     dataSet.valueTextColor = Color.BLACK
                     dataSet.lineWidth = 2f
                     dataSet.circleRadius = 4f
+                    dataSet.setDrawValues(true)
 
                     val lineData = LineData(dataSet)
                     lineChart.data = lineData
-                    lineChart.invalidate() // Refrescar la gráfica
+                    lineChart.description.text = "Lecturas de PPM"
+                    lineChart.animateX(1000)
+                    lineChart.invalidate()
                 } else {
                     Log.d("HistorialActivity", "No se encontraron datos de PPM.")
                 }

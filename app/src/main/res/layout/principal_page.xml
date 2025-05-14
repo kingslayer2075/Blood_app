@@ -28,21 +28,32 @@
                 android:text="PPM"
                 android:textStyle="bold"
                 android:textColor="#000000"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center" />
 
             <com.github.mikephil.charting.charts.LineChart
                 android:id="@+id/lineChart"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:layout_marginBottom="8dp" />
+
+            <!-- ✅ TextView que faltaba para mostrar el último PPM -->
+            <TextView
+                android:id="@+id/ppmTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Último PPM: --"
+                android:textStyle="bold"
+                android:textColor="#000000"
+                android:layout_marginTop="8dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Medido el dd/mm/yyyy"
                 android:textStyle="bold"
-                android:textColor="#000000"/>
+                android:textColor="#000000"
+                android:layout_marginTop="4dp" />
 
         </LinearLayout>
 
@@ -74,9 +85,9 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
-            android:contentDescription="Botón vector"
+            android:contentDescription="Botón historial"
             android:scaleType="fitCenter"
-            android:src="@drawable/vector"/>
+            android:src="@drawable/vector" />
 
         <ImageButton
             android:id="@+id/profButton"
@@ -87,7 +98,7 @@
             android:layout_marginBottom="8dp"
             android:adjustViewBounds="true"
             android:background="@android:color/transparent"
-            android:contentDescription="Botón ppmb"
+            android:contentDescription="Botón perfil"
             android:scaleType="fitCenter"
             android:src="@drawable/ppmb" />
 
