@@ -75,8 +75,6 @@ class CreateProfileFirsActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val uid = auth.currentUser?.uid ?: return@addOnCompleteListener
-
-                    // Crear documento en la colección "usuarios"
                     val user = hashMapOf(
                         "uid" to uid,
                         "nombre" to name,
@@ -88,7 +86,6 @@ class CreateProfileFirsActivity : AppCompatActivity() {
                         "edad" to age
                     )
 
-                    // Guardar datos
                     db.collection("usuarios").document(uid)
                         .set(user)
                         .addOnSuccessListener {
@@ -97,7 +94,6 @@ class CreateProfileFirsActivity : AppCompatActivity() {
                             db.collection("ppmData").document(uid)
                                 .set(ppmData)
                                 .addOnSuccessListener {
-                                    // Todo ha ido bien, ahora redirigir al siguiente Activity
                                     Toast.makeText(this, "Usuario registrado y PPM Data creado", Toast.LENGTH_SHORT).show()
                                     startActivity(Intent(this, ProfileLastActivity::class.java))
                                     finish()

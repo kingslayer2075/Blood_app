@@ -16,19 +16,12 @@ class CameraViewModel : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
 
-    /**
-     * Simula una medición de pulso y SpO₂ y actualiza LiveData.
-     */
+
     fun startMeasurement() {
-        // Simulación; en producción reemplazar con lógica real
         _pulseData.value = (60..100).random()
         _spo2Value.value = (95..100).random()
     }
 
-    /**
-     * Guarda los valores actuales de pulso y SpO₂ en las colecciones existentes
-     * bajo el UID del usuario autenticado.
-     */
     fun saveMeasurement() {
         val uid = auth.currentUser?.uid ?: return
         val timestamp = System.currentTimeMillis()
@@ -57,7 +50,6 @@ class CameraViewModel : ViewModel() {
     }
 
     init {
-        // Genera valores iniciales para mostrar
         startMeasurement()
     }
 }

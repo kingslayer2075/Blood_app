@@ -24,8 +24,6 @@ class PrincipalPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.principal_page)
-
-        // Botones de navegación
         findViewById<ImageButton>(R.id.profButton)
             .setOnClickListener { startActivity(Intent(this, ProfileLastActivity::class.java)) }
 
@@ -34,12 +32,9 @@ class PrincipalPageActivity : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.ButtonP)
             .setOnClickListener { startActivity(Intent(this, CameraActivity::class.java)) }
-
-        // Referencias UI
         spo2TextView = findViewById(R.id.spo2TextView)
         spo2Chart    = findViewById(R.id.spo2Chart)
 
-        // Carga datos
         showLatestSpO2()
         loadSpO2Sparkline()
     }
@@ -59,7 +54,7 @@ class PrincipalPageActivity : AppCompatActivity() {
                 else "Sin registros de SpO₂"
             }
             .addOnFailureListener {
-                spo2TextView.text = "Error al cargar SpO₂"
+                spo2TextView.text = "Error al cargar SpO2"
             }
     }
 
@@ -73,7 +68,6 @@ class PrincipalPageActivity : AppCompatActivity() {
             .limit(5)  // solo las 5 más recientes
             .get()
             .addOnSuccessListener { result ->
-                // revertir para que queden cronológicas
                 val entries = result.documents
                     .asReversed()
                     .mapIndexedNotNull { idx, doc ->
@@ -81,10 +75,10 @@ class PrincipalPageActivity : AppCompatActivity() {
                     }
 
                 val dataSet = LineDataSet(entries, "").apply {
-                    setDrawValues(false)      // sin valores encima
+                    setDrawValues(false)
                     color = resources.getColor(R.color.purple_500, null)
                     lineWidth = 2f
-                    setDrawCircles(false)     // sparkline sin puntos
+                    setDrawCircles(false)
                 }
 
                 spo2Chart.apply {

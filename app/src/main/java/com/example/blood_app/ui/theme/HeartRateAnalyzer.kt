@@ -16,8 +16,7 @@ class HeartRateAnalyzer : ViewModel() {
     fun analyzeHeartRate(rawData: ByteArray) {
         viewModelScope.launch {
             val rate = withContext(Dispatchers.IO) {
-                // Analizar datos aquí (procesar la imagen o los datos de la cámara)
-                80 // Este es un valor simulado de pulso
+                80
             }
             _heartRate.postValue(rate)
         }

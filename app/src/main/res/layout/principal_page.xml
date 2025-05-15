@@ -22,7 +22,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Gráfico SpO₂ -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

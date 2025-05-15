@@ -22,7 +22,6 @@ fun CameraPermissionScreen(
     val context = LocalContext.current
     val permissionState = remember { mutableStateOf(false) }
 
-    // Revisa si ya está concedido el permiso
     LaunchedEffect(Unit) {
         permissionState.value = ContextCompat.checkSelfPermission(
             context,
@@ -30,7 +29,6 @@ fun CameraPermissionScreen(
         ) == PackageManager.PERMISSION_GRANTED
     }
 
-    // Lanzador para solicitar permiso
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->

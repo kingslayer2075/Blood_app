@@ -32,8 +32,6 @@ fun CameraPreviewScreen(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
-        // ✅ Botón para salir
         Button(onClick = onExitCamera) {
             Text("Salir de la Cámara")
         }

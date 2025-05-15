@@ -8,9 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 
-// ---------------------------
-// Colores de Blood App Theme
-// ---------------------------
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)
@@ -31,12 +29,8 @@ private val BloodLightColorScheme = lightColorScheme(
     tertiary = Pink40
 )
 
-// Si tenías tipografía definida para BloodApp, ponla aquí
-val BloodTypography = Typography() // Usa configuración por defecto o la tuya
+val BloodTypography = Typography()
 
-// ------------------------------
-// Colores de CameraX Theme
-// ------------------------------
 private val CameraXLightColorScheme = lightColorScheme(
     primary = Color(0xFF6200EE),
     onPrimary = Color.White,
@@ -51,12 +45,8 @@ private val CameraXDarkColorScheme = darkColorScheme(
     onSecondary = Color.Black
 )
 
-// Tipografía para CameraX (usa por defecto si no tenías una personalizada)
 val CameraXTypography = Typography()
 
-// ---------------------------
-// Tema de Blood App
-// ---------------------------
 @Composable
 fun BloodAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
@@ -80,9 +70,6 @@ fun BloodAppTheme(
     )
 }
 
-// ---------------------------
-// Tema de CameraX
-// ---------------------------
 @Composable
 fun CameraXTheme(
     darkTheme: Boolean = false,
@@ -97,14 +84,10 @@ fun CameraXTheme(
     )
 }
 
-// ---------------------------
-// Previews opcionales
-// ---------------------------
 @Preview(showBackground = true)
 @Composable
 fun CameraXPreview() {
     CameraXTheme {
-        // Tu vista de prueba aquí
     }
 }
 
@@ -112,6 +95,5 @@ fun CameraXPreview() {
 @Composable
 fun BloodAppPreview() {
     BloodAppTheme {
-        // Tu vista de prueba aquí
     }
 }

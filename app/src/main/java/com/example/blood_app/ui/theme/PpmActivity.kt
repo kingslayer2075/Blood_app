@@ -107,17 +107,13 @@ class PpmActivity : AppCompatActivity() {
 
     private fun reiniciarGrafica() {
         if (listaPuntos.isNotEmpty()) {
-            // Tomamos sólo el último punto
             val ultimoPunto = listaPuntos.last()
             val nuevaLista = listOf(Entry(0f, ultimoPunto.y))
-
-            // Actualizamos valoresPPM también con sólo el último
             valoresPPM.clear()
             valoresPPM.add(ultimoPunto.y)
 
             actualizarGrafica(nuevaLista)
 
-            // Actualizamos consejo con la mediana (que ahora es el último valor)
             mostrarConsejo(ultimoPunto.y)
         }
     }

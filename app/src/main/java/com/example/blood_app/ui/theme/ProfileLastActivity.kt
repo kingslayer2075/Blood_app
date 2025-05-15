@@ -59,7 +59,7 @@ class ProfileLastActivity : AppCompatActivity() {
 
     private fun loadUserProfile() {
         db.collection("usuarios")
-            .orderBy("nombre", Query.Direction.DESCENDING) // ¡OJO! Sigue siendo una forma no confiable.
+            .orderBy("nombre", Query.Direction.DESCENDING)
             .limit(1)
             .get()
             .addOnSuccessListener { querySnapshot ->
