@@ -10,7 +10,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.livedata.observeAsState
 
 @Composable
-fun CameraPreviewScreen(viewModel: CameraViewModel = viewModel()) {
+fun CameraPreviewScreen(
+    viewModel: CameraViewModel = viewModel(),
+    onExitCamera: () -> Unit ) {
     val pulseData by viewModel.pulseData.observeAsState()
     val spo2Data by viewModel.spo2Value.observeAsState()
 
@@ -27,6 +29,13 @@ fun CameraPreviewScreen(viewModel: CameraViewModel = viewModel()) {
 
         Button(onClick = { viewModel.saveMeasurement() }) {
             Text("Guardar Medición")
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // ✅ Botón para salir
+        Button(onClick = onExitCamera) {
+            Text("Salir de la Cámara")
         }
     }
 }

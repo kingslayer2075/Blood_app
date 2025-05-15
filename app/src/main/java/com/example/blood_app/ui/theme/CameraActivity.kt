@@ -1,11 +1,12 @@
 package com.example.blood_app
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.compose.setContent
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -21,6 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.blood_app.ui.theme.PpmActivity
+
 
 class CameraActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +42,7 @@ class CameraActivity : ComponentActivity() {
                 }
 
                 if (hasPermission) {
+                    val context = LocalContext.current
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -47,7 +51,14 @@ class CameraActivity : ComponentActivity() {
                     ) {
                         CameraPreview(viewModel)
                         Spacer(modifier = Modifier.height(16.dp))
-                        CameraPreviewScreen(viewModel)
+
+                        CameraPreviewScreen(
+                            viewModel = viewModel,
+                            onExitCamera = {
+                                context.startActivity(Intent(context, PpmActivity::class.java))
+                                (context as? ComponentActivity)?.finish()
+                            }
+                        )
                     }
                 } else {
                     Column(
