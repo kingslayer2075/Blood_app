@@ -12,6 +12,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class HistorialActivity : AppCompatActivity() {
 
@@ -38,11 +39,13 @@ class HistorialActivity : AppCompatActivity() {
         db.collection("ppmData")
             .document(uid)
             .collection("registros")
-            .orderBy("timestamp")  // ordenar cronológicamente
+            .orderBy("timestamp", Query.Direction.DESCENDING) // Orden descendente
+            .limit(15) // Solo los 15 más recientes
             .get()
             .addOnSuccessListener { result ->
+                val reversed = result.reversed() // Revertir para orden cronológico
                 var index = 0f
-                for (document in result) {
+                for (document in reversed) {
                     val ppm = document.getDouble("ppm")
                     if (ppm != null) {
                         listaPuntos.add(Entry(index, ppm.toFloat()))

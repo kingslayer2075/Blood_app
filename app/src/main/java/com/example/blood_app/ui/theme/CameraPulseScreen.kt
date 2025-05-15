@@ -1,50 +1,26 @@
 package com.example.blood_app
 
-
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.material3.Text
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.lifecycle.viewmodel.compose.viewModel
-import java.text.SimpleDateFormat
-import java.util.*
 
 @Composable
 fun CameraPulseScreen(viewModel: CameraViewModel) {
     val pulseData = viewModel.pulseData.observeAsState(initial = 0)
+    val spo2Data = viewModel.spo2Value.observeAsState(initial = null)
 
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // Valor actual
         Text("Pulso actual: ${pulseData.value} PPM")
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Historial
-        Text("Historial de pulsos:")
-
-        Column {
-            viewModel.pulseList.forEach {
-                Text("• ${it.value} PPM @ ${formatTimestamp(it.timestamp)}")
-            }
-        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text("Oxígeno en sangre (SpO₂): ${spo2Data.value ?: "--"} %")
     }
-}
-
-// Formatea la hora
-fun formatTimestamp(timestamp: Long): String {
-    val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
-    return formatter.format(Date(timestamp))
-}
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCameraPulseScreen() {
-
 }

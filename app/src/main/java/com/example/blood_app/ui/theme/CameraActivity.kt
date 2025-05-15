@@ -32,9 +32,7 @@ class CameraActivity : ComponentActivity() {
 
                 val launcher = rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission()
-                ) { granted ->
-                    hasPermission = granted
-                }
+                ) { granted -> hasPermission = granted }
 
                 LaunchedEffect(Unit) {
                     launcher.launch(Manifest.permission.CAMERA)
@@ -47,19 +45,9 @@ class CameraActivity : ComponentActivity() {
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        CameraPreviewScreen()
-
+                        CameraPreview(viewModel)
                         Spacer(modifier = Modifier.height(16.dp))
-
-                        Button(onClick = {
-                            viewModel.startPulseMeasurement()
-                        }) {
-                            Text("Iniciar Medición de Pulso")
-                        }
-
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        CameraPulseScreen(viewModel)
+                        CameraPreviewScreen(viewModel)
                     }
                 } else {
                     Column(
@@ -71,9 +59,7 @@ class CameraActivity : ComponentActivity() {
                     ) {
                         Text("Se necesita permiso para usar la cámara.")
                         Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = {
-                            launcher.launch(Manifest.permission.CAMERA)
-                        }) {
+                        Button(onClick = { launcher.launch(Manifest.permission.CAMERA) }) {
                             Text("Solicitar permiso nuevamente")
                         }
                     }
@@ -84,7 +70,7 @@ class CameraActivity : ComponentActivity() {
 }
 
 @Composable
-fun CameraPreviewScreen() {
+fun CameraPreview(viewModel: CameraViewModel) {
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -100,7 +86,7 @@ fun CameraPreviewScreen() {
                     val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
                     try {
-                        preview.setSurfaceProvider(this.surfaceProvider)
+                        preview.setSurfaceProvider(surfaceProvider)
                         cameraProvider.unbindAll()
                         cameraProvider.bindToLifecycle(
                             lifecycleOwner,
@@ -110,7 +96,6 @@ fun CameraPreviewScreen() {
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-
                 }, ContextCompat.getMainExecutor(ctx))
             }
         },

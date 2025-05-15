@@ -1,84 +1,32 @@
 package com.example.blood_app
 
-import androidx.compose.ui.platform.LocalContext
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.camera.view.PreviewView
-import androidx.compose.ui.graphics.Color
-import android.view.ViewGroup
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.runtime.livedata.observeAsState
 
 @Composable
-fun CameraPreviewScreen(viewModel: CameraViewModel) {
+fun CameraPreviewScreen(viewModel: CameraViewModel = viewModel()) {
     val pulseData by viewModel.pulseData.observeAsState()
-    val isCameraReady by viewModel.isCameraReady.observeAsState(false)
-
-    val context = LocalContext.current  // Se obtiene el contexto fuera del LaunchedEffect para evitar problemas
-
-    // Usamos LaunchedEffect para ejecutar efectos secundarios como el Toast dentro del contexto composable
-    LaunchedEffect(pulseData) {
-        pulseData?.let {
-            if (viewModel.validatePulse(it)) {
-                Toast.makeText(context, "Pulse: $it", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(context, "Invalid pulse", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+    val spo2Data by viewModel.spo2Value.observeAsState()
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (isCameraReady == true) {
-            Text("Camera is ready. Measuring pulse...", color = Color.Green)
-            // Vista previa de la cámara
-            AndroidView(
-                factory = { context ->
-                    PreviewView(context).apply {
-                        // Configuración de la cámara aquí
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(16.dp)
-            )
-        } else {
-            Text("Camera not ready", color = Color.Red)
-        }
+        Text(text = "PPM: ${pulseData ?: "--"}", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(text = "SpO₂: ${spo2Data ?: "--"}%", style = MaterialTheme.typography.headlineMedium)
+        Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Button(
-            onClick = { viewModel.startPulseMeasurement() },
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text("Start Measurement")
+        Button(onClick = { viewModel.saveMeasurement() }) {
+            Text("Guardar Medición")
         }
     }
-}
-
-@Preview
-@Composable
-fun PreviewCamera() {
-    val viewModel: CameraViewModel = viewModel()
-    CameraPreviewScreen(viewModel = viewModel)
 }
