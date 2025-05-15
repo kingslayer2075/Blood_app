@@ -48,15 +48,6 @@
                 android:layout_marginTop="8dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/tutorialButton"
-            android:layout_width="126dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:backgroundTint="#D32F2F"
-            android:text="Tutorial"
-            android:textColor="@android:color/white" />
-
     </LinearLayout>
 
     <FrameLayout

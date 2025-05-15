@@ -1,220 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F8F8F8">
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#F8F8F8">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp"
+        android:gravity="start">
+
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp"
+            android:orientation="horizontal"
+            android:gravity="end">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="339dp"
+                android:layout_height="56dp"
+                android:layout_margin="10dp"
+                android:contentDescription="Volver"
+                android:src="@drawable/returning"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="end"
+                android:src="@drawable/profile_avatar" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre"
+            android:textStyle="bold"
+            android:gravity="start" />
+        <TextView
+            android:id="@+id/profileNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="start" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Apellido"
+            android:textStyle="bold"
+            android:gravity="start" />
+        <TextView
+            android:id="@+id/profileLastNameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="start" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tipo de sangre"
+            android:textStyle="bold"
+            android:gravity="start" />
+        <TextView
+            android:id="@+id/profileBloodTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="start" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:gravity="start">
 
-
-
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end">
-
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="339dp"
-                    android:layout_height="56dp"
-                    android:layout_margin="10dp"
-                    android:contentDescription="Volver"
-                    android:src="@drawable/returning"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <ImageView
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="end"
-                    android:src="@drawable/profile_avatar" />
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Nombre"
-                android:textStyle="bold"
-                android:gravity="start" />
-            <TextView
-                android:id="@+id/profileNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="start" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Apellido"
-                android:textStyle="bold"
-                android:gravity="start" />
-            <TextView
-                android:id="@+id/profileLastNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="start" />
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tipo de sangre"
-                android:textStyle="bold"
-                android:gravity="start" />
-            <TextView
-                android:id="@+id/profileBloodTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="start" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="start">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Peso"
-                        android:textStyle="bold"
-                        android:gravity="start" />
-                    <TextView
-                        android:id="@+id/profileWeightTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="kg"
-                        android:gravity="start" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Altura"
-                        android:textStyle="bold"
-                        android:gravity="start" />
-                    <TextView
-                        android:id="@+id/profileHeightTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="cm"
-                        android:gravity="start" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Edad"
-                        android:textStyle="bold"
-                        android:gravity="start" />
-                    <TextView
-                        android:id="@+id/profileAgeTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:gravity="start" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="start"
-                android:paddingTop="10dp"
-                android:text="Correo electrónico"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/profileEmailTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="start" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:gravity="center_horizontal"
+                android:layout_weight="1"
                 android:orientation="vertical">
-
-
-                <GridLayout
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
-                    android:rowCount="2"
-                    android:gravity="center">
-
-
-                    <Button
-                        android:id="@+id/refreshButton"
-                        android:layout_width="126dp"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="#D32F2F"
-                        android:text="Actualizar"
-                        android:textColor="@android:color/white" />
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="#D32F2F"
-                        android:text="Descargar"
-                        android:textColor="@android:color/white" />
-
-
-
-
-                    <Button
-                        android:id="@+id/Config"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="#D32F2F"
-                        android:text="Configuración"
-                        android:textColor="@android:color/white" />
-
-
-                    <Button
-                        android:id="@+id/historialButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:backgroundTint="#D32F2F"
-                        android:text="Historial"
-                        android:textColor="@android:color/white" />
-                </GridLayout>
-
-
+                    android:text="Peso"
+                    android:textStyle="bold"
+                    android:gravity="start" />
+                <TextView
+                    android:id="@+id/profileWeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="kg"
+                    android:gravity="start" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Altura"
+                    android:textStyle="bold"
+                    android:gravity="start" />
+                <TextView
+                    android:id="@+id/profileHeightTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="cm"
+                    android:gravity="start" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Edad"
+                    android:textStyle="bold"
+                    android:gravity="start" />
+                <TextView
+                    android:id="@+id/profileAgeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:gravity="start" />
+            </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:paddingTop="10dp"
+            android:text="Correo electrónico"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profileEmailTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:gravity="start" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:gravity="center">
+
+
+                <Button
+                    android:id="@+id/refreshButton"
+                    android:layout_width="126dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#D32F2F"
+                    android:text="Actualizar"
+                    android:textColor="@android:color/white" />
+
+                <Button
+                    android:id="@+id/historialButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="#D32F2F"
+                    android:text="Historial"
+                    android:textColor="@android:color/white" />
+            </GridLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 </ScrollView>
