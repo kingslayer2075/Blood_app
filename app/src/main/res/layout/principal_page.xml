@@ -22,39 +22,6 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Gráfico PPM -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="PPM"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:layout_gravity="center" />
-
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp" />
-
-            <TextView
-                android:id="@+id/ppmTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Último PPM: --"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:layout_marginTop="8dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Medido el dd/mm/yyyy"
-                android:textStyle="bold"
-                android:textColor="#000000"
-                android:layout_marginTop="4dp" />
-
             <!-- Gráfico SpO₂ -->
             <TextView
                 android:layout_width="wrap_content"

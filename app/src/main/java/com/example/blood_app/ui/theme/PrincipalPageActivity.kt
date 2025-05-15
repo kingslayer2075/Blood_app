@@ -18,7 +18,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 class PrincipalPageActivity : AppCompatActivity() {
 
     private val db = FirebaseFirestore.getInstance()
-    private lateinit var ppmTextView: TextView
     private lateinit var spo2TextView: TextView
     private lateinit var spo2Chart: LineChart
 
@@ -26,51 +25,26 @@ class PrincipalPageActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.principal_page)
 
-        val ppmbButton = findViewById<ImageButton>(R.id.ppmbButton)
-        val profButton = findViewById<ImageButton>(R.id.profButton)
-        val cameraButton = findViewById<ImageButton>(R.id.ButtonP)
+        // Botones de navegación
+        findViewById<ImageButton>(R.id.profButton)
+            .setOnClickListener { startActivity(Intent(this, ProfileLastActivity::class.java)) }
 
-        ppmTextView = findViewById(R.id.ppmTextView)
+        findViewById<ImageButton>(R.id.ppmbButton)
+            .setOnClickListener { startActivity(Intent(this, PpmActivity::class.java)) }
+
+        findViewById<ImageButton>(R.id.ButtonP)
+            .setOnClickListener { startActivity(Intent(this, CameraActivity::class.java)) }
+
+        // Referencias UI
         spo2TextView = findViewById(R.id.spo2TextView)
-        spo2Chart = findViewById(R.id.spo2Chart)
+        spo2Chart    = findViewById(R.id.spo2Chart)
 
-        profButton.setOnClickListener {
-            startActivity(Intent(this, ProfileLastActivity::class.java))
-        }
-
-        ppmbButton.setOnClickListener {
-            startActivity(Intent(this, PpmActivity::class.java))
-        }
-
-        cameraButton.setOnClickListener {
-            startActivity(Intent(this, CameraActivity::class.java))
-        }
-
-        obtenerUltimoPPM()
-        obtenerUltimoSpO2()
-        cargarGraficaSpO2()
+        // Carga datos
+        showLatestSpO2()
+        loadSpO2Sparkline()
     }
 
-    private fun obtenerUltimoPPM() {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
-
-        db.collection("ppmData")
-            .document(uid)
-            .collection("registros")
-            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(1)
-            .get()
-            .addOnSuccessListener { result ->
-                val documento = result.documents.firstOrNull()
-                val ppm = documento?.getDouble("ppm")
-                ppmTextView.text = if (ppm != null) "Último PPM: $ppm" else "No se pudo leer el dato"
-            }
-            .addOnFailureListener {
-                ppmTextView.text = "Error al cargar PPM"
-            }
-    }
-
-    private fun obtenerUltimoSpO2() {
+    private fun showLatestSpO2() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("spo2Data")
@@ -80,41 +54,59 @@ class PrincipalPageActivity : AppCompatActivity() {
             .limit(1)
             .get()
             .addOnSuccessListener { result ->
-                val documento = result.documents.firstOrNull()
-                val spo2 = documento?.getDouble("spo2")
-                spo2TextView.text = if (spo2 != null) "Último SpO₂: $spo2%" else "No se pudo leer SpO₂"
+                val spo2 = result.documents.firstOrNull()?.getDouble("spo2")
+                spo2TextView.text = if (spo2 != null) "Último SpO₂: ${spo2.toInt()}%"
+                else "Sin registros de SpO₂"
             }
             .addOnFailureListener {
                 spo2TextView.text = "Error al cargar SpO₂"
             }
     }
 
-    private fun cargarGraficaSpO2() {
+    private fun loadSpO2Sparkline() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("spo2Data")
             .document(uid)
             .collection("registros")
             .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(15)
+            .limit(5)  // solo las 5 más recientes
             .get()
             .addOnSuccessListener { result ->
-                val entries = result.documents.reversed().mapIndexedNotNull { index, doc ->
-                    doc.getDouble("spo2")?.let { Entry(index.toFloat(), it.toFloat()) }
+                // revertir para que queden cronológicas
+                val entries = result.documents
+                    .asReversed()
+                    .mapIndexedNotNull { idx, doc ->
+                        doc.getDouble("spo2")?.let { Entry(idx.toFloat(), it.toFloat()) }
+                    }
+
+                val dataSet = LineDataSet(entries, "").apply {
+                    setDrawValues(false)      // sin valores encima
+                    color = resources.getColor(R.color.purple_500, null)
+                    lineWidth = 2f
+                    setDrawCircles(false)     // sparkline sin puntos
                 }
 
-                val dataSet = LineDataSet(entries, "SpO₂")
-                dataSet.color = resources.getColor(R.color.purple_500, null)
-                dataSet.valueTextColor = resources.getColor(R.color.black, null)
-
-                val lineData = LineData(dataSet)
-                spo2Chart.data = lineData
-                spo2Chart.description.isEnabled = false
-                spo2Chart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-                spo2Chart.invalidate()
+                spo2Chart.apply {
+                    data = LineData(dataSet)
+                    description.isEnabled = false
+                    legend.isEnabled = false
+                    xAxis.run {
+                        position = XAxis.XAxisPosition.BOTTOM
+                        setDrawGridLines(false)
+                        setDrawLabels(false)
+                    }
+                    axisLeft.run {
+                        setDrawGridLines(false)
+                        setDrawLabels(false)
+                    }
+                    axisRight.isEnabled = false
+                    setTouchEnabled(false)
+                    invalidate()
+                }
             }
-            .addOnFailureListener {
-                Log.e("PrincipalPageActivity", "Error al cargar gráfica SpO₂: ${it.message}")
+            .addOnFailureListener { e ->
+                Log.e("PrincipalPageAct", "Error gráf. SpO₂: ${e.message}")
             }
     }
 }

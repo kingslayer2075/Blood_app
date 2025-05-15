@@ -1,9 +1,15 @@
 package com.example.blood_app.ui.theme
 
+import android.content.ContentValues
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.blood_app.R
 import com.github.mikephil.charting.charts.LineChart
@@ -12,12 +18,12 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class HistorialActivity : AppCompatActivity() {
 
     private lateinit var lineChart: LineChart
     private lateinit var btnBack: ImageView
+    private lateinit var descargarButton: Button
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,8 +32,13 @@ class HistorialActivity : AppCompatActivity() {
 
         lineChart = findViewById(R.id.lineChart)
         btnBack = findViewById(R.id.btnBack)
+        descargarButton = findViewById(R.id.descargarButton)
 
         btnBack.setOnClickListener { finish() }
+
+        descargarButton.setOnClickListener {
+            saveChartWithMediaStore()
+        }
 
         obtenerDatosDesdeFirebase()
     }
@@ -39,13 +50,11 @@ class HistorialActivity : AppCompatActivity() {
         db.collection("ppmData")
             .document(uid)
             .collection("registros")
-            .orderBy("timestamp", Query.Direction.DESCENDING) // Orden descendente
-            .limit(15) // Solo los 15 más recientes
+            .orderBy("timestamp")
             .get()
             .addOnSuccessListener { result ->
-                val reversed = result.reversed() // Revertir para orden cronológico
                 var index = 0f
-                for (document in reversed) {
+                for (document in result) {
                     val ppm = document.getDouble("ppm")
                     if (ppm != null) {
                         listaPuntos.add(Entry(index, ppm.toFloat()))
@@ -74,5 +83,37 @@ class HistorialActivity : AppCompatActivity() {
             .addOnFailureListener { e ->
                 Log.e("HistorialActivity", "Error al obtener datos: ${e.message}")
             }
+    }
+
+    private fun saveChartWithMediaStore() {
+        if (lineChart.data == null) {
+            Toast.makeText(this, "No hay datos para guardar la gráfica", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val filename = "grafica_ppm_${System.currentTimeMillis()}.png"
+        val bitmap = lineChart.chartBitmap
+
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, filename)
+            put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+            put(MediaStore.MediaColumns.RELATIVE_PATH, "Pictures/BloodApp")
+        }
+
+        val uri = contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        try {
+            uri?.let {
+                contentResolver.openOutputStream(it)?.use { outputStream ->
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    Toast.makeText(this, "Gráfica guardada en la galería", Toast.LENGTH_SHORT).show()
+                }
+            } ?: run {
+                Toast.makeText(this, "Error al crear archivo", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: Exception) {
+            Log.e("HistorialActivity", "Error guardando gráfica: ${e.message}")
+            Toast.makeText(this, "Error guardando la gráfica: ${e.message}", Toast.LENGTH_LONG).show()
+        }
     }
 }
