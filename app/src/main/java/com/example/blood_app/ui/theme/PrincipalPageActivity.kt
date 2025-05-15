@@ -65,7 +65,7 @@ class PrincipalPageActivity : AppCompatActivity() {
             .document(uid)
             .collection("registros")
             .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
-            .limit(5)  // solo las 5 más recientes
+            .limit(5)
             .get()
             .addOnSuccessListener { result ->
                 val entries = result.documents

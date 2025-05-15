@@ -91,7 +91,7 @@ class HistorialActivity : AppCompatActivity() {
             return
         }
 
-        val filename = "grafica_ppm_${System.currentTimeMillis()}.png"
+        val filename = "gráfica_ppm_${System.currentTimeMillis()}.png"
         val bitmap = lineChart.chartBitmap
 
         val contentValues = ContentValues().apply {

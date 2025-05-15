@@ -35,6 +35,8 @@
         <activity android:name=".ui.theme.PpmActivity" />
         <activity android:name=".IniciasSesionActivity" />
         <activity android:name=".CameraActivity" />
+        <activity android:name=".EditProfileActivity" />
+
     </application>
 
 </manifest>

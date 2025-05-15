@@ -45,7 +45,7 @@ class ProfileLastActivity : AppCompatActivity() {
 
 
         refreshButton.setOnClickListener {
-            val intent = Intent(this, CreateProfileFirsActivity::class.java)
+            val intent = Intent(this, EditProfileActivity::class.java)
             startActivity(intent)
         }
 
