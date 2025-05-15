@@ -14,6 +14,7 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 class PrincipalPageActivity : AppCompatActivity() {
 
@@ -24,6 +25,7 @@ class PrincipalPageActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.principal_page)
+
         findViewById<ImageButton>(R.id.profButton)
             .setOnClickListener { startActivity(Intent(this, ProfileLastActivity::class.java)) }
 
@@ -32,75 +34,82 @@ class PrincipalPageActivity : AppCompatActivity() {
 
         findViewById<ImageButton>(R.id.ButtonP)
             .setOnClickListener { startActivity(Intent(this, CameraActivity::class.java)) }
+
         spo2TextView = findViewById(R.id.spo2TextView)
-        spo2Chart    = findViewById(R.id.spo2Chart)
+        spo2Chart = findViewById(R.id.spo2Chart)
 
-        showLatestSpO2()
-        loadSpO2Sparkline()
+        listenForLatestSpO2()
+        listenForSpO2GraphUpdates()
     }
 
-    private fun showLatestSpO2() {
+    private fun listenForLatestSpO2() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("spo2Data")
             .document(uid)
             .collection("registros")
-            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(1)
-            .get()
-            .addOnSuccessListener { result ->
-                val spo2 = result.documents.firstOrNull()?.getDouble("spo2")
-                spo2TextView.text = if (spo2 != null) "Último SpO₂: ${spo2.toInt()}%"
-                else "Sin registros de SpO₂"
-            }
-            .addOnFailureListener {
-                spo2TextView.text = "Error al cargar SpO2"
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    spo2TextView.text = "Error al cargar SpO₂"
+                    Log.w("PrincipalPage", "Error escuchando SpO2: ${e.message}")
+                    return@addSnapshotListener
+                }
+
+                val spo2 = snapshot?.documents?.firstOrNull()?.getDouble("spo2")
+                spo2TextView.text = if (spo2 != null) "Último SpO₂: ${spo2.toInt()}%" else "Sin registros de SpO₂"
             }
     }
 
-    private fun loadSpO2Sparkline() {
+    private fun listenForSpO2GraphUpdates() {
         val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
         db.collection("spo2Data")
             .document(uid)
             .collection("registros")
-            .orderBy("timestamp", com.google.firebase.firestore.Query.Direction.DESCENDING)
+            .orderBy("timestamp", Query.Direction.DESCENDING)
             .limit(5)
-            .get()
-            .addOnSuccessListener { result ->
-                val entries = result.documents
-                    .asReversed()
-                    .mapIndexedNotNull { idx, doc ->
-                        doc.getDouble("spo2")?.let { Entry(idx.toFloat(), it.toFloat()) }
-                    }
-
-                val dataSet = LineDataSet(entries, "").apply {
-                    setDrawValues(false)
-                    color = resources.getColor(R.color.purple_500, null)
-                    lineWidth = 2f
-                    setDrawCircles(false)
+            .addSnapshotListener { snapshot, e ->
+                if (e != null) {
+                    Log.e("PrincipalPage", "Error gráf. SpO₂: ${e.message}")
+                    return@addSnapshotListener
                 }
 
-                spo2Chart.apply {
-                    data = LineData(dataSet)
-                    description.isEnabled = false
-                    legend.isEnabled = false
-                    xAxis.run {
-                        position = XAxis.XAxisPosition.BOTTOM
-                        setDrawGridLines(false)
-                        setDrawLabels(false)
+                if (snapshot != null && !snapshot.isEmpty) {
+                    val entries = snapshot.documents
+                        .asReversed()
+                        .mapIndexedNotNull { idx, doc ->
+                            doc.getDouble("spo2")?.let { Entry(idx.toFloat(), it.toFloat()) }
+                        }
+
+                    if (entries.isNotEmpty()) {
+                        val dataSet = LineDataSet(entries, "").apply {
+                            setDrawValues(false)
+                            color = resources.getColor(R.color.purple_500, null)
+                            lineWidth = 2f
+                            setDrawCircles(false)
+                        }
+
+                        spo2Chart.apply {
+                            data = LineData(dataSet)
+                            description.isEnabled = false
+                            legend.isEnabled = false
+                            xAxis.run {
+                                position = XAxis.XAxisPosition.BOTTOM
+                                setDrawGridLines(false)
+                                setDrawLabels(false)
+                            }
+                            axisLeft.run {
+                                setDrawGridLines(false)
+                                setDrawLabels(false)
+                            }
+                            axisRight.isEnabled = false
+                            setTouchEnabled(false)
+                            invalidate()
+                        }
                     }
-                    axisLeft.run {
-                        setDrawGridLines(false)
-                        setDrawLabels(false)
-                    }
-                    axisRight.isEnabled = false
-                    setTouchEnabled(false)
-                    invalidate()
                 }
-            }
-            .addOnFailureListener { e ->
-                Log.e("PrincipalPageAct", "Error gráf. SpO₂: ${e.message}")
             }
     }
 }
